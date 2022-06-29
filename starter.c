@@ -5,48 +5,60 @@
 
 pokemon_t *salameche(void){
 
-	pokemon_t* salameche = malloc(sizeof(pokemon_t));
-	salameche->name = "salameche";
-	salameche->type = "feu";
-	salameche->nb_pokemon= 1;
-	salameche->next = NULL;
+	pokemon_t* salameche_entry = malloc(sizeof(pokemon_t));
+	salameche_entry->name = "Salameche";
+	salameche_entry->type = "feu";
+	salameche_entry->nb_pokemon= 1;
+	salameche_entry->next = NULL;
 
-	printf("Vous avez choisi %s\n", salameche->name); 
+	printf("Vous avez choisi %s\n", salameche_entry->name);  
 
-	return salameche;
+	return salameche_entry;
 
 }
 
 
 pokemon_t *carapuce(void){
 
-	pokemon_t* carapuce = malloc(sizeof(pokemon_t));
-	carapuce->name = "carapuce";
-	carapuce->type = "eau";
-	carapuce->nb_pokemon= 1;
-	carapuce->next = NULL;
+	pokemon_t* carapuce_entry = malloc(sizeof(pokemon_t));
+	carapuce_entry->name = "Carapuce";
+	carapuce_entry->type = "eau";
+	carapuce_entry->nb_pokemon= 1;
+	carapuce_entry->next = NULL;
 
-	printf("Vous avez choisi %s\n", carapuce->name); 
+	printf("Vous avez choisi %s\n", carapuce_entry->name); 
 
-	return carapuce;
+	return carapuce_entry;
 
 }
 
 
 pokemon_t *bulbizarre(void){
 
-	pokemon_t* bulbizarre = malloc(sizeof(pokemon_t));
-	bulbizarre->name = "bulbizarre";
-	bulbizarre->type = "plante";
-	bulbizarre->nb_pokemon= 1;
-	bulbizarre->next = NULL;
+	pokemon_t* bulbizarre_entry = malloc(sizeof(pokemon_t));
+	bulbizarre_entry->name = "Bulbizarre";
+	bulbizarre_entry->type = "plante";
+	bulbizarre_entry->nb_pokemon= 1;
+	bulbizarre_entry->next = NULL;
 
-	printf("Vous avez choisi %s\n", bulbizarre->name); 
+	printf("Vous avez choisi %s\n", bulbizarre_entry->name); 
 
-	return bulbizarre;
+	return bulbizarre_entry ;
 }
 
-pokemon_t *start_menu(void){
+
+/*
+void *print_list(pokemon_t *linked_list){
+
+	while(linked_list != NULL){
+		printf("%s",linked_list->name);
+		printf("%s",linked_list->type);
+		printf("%d",linked_list->nb_pokemon);
+		linked_list = linked_list->next;
+	}
+}
+*/
+void start_menu(void){
 
 	int i = 0;
 
@@ -55,7 +67,7 @@ pokemon_t *start_menu(void){
 	printf("Salameche : 0\n");
 	printf("Carapuce : 1\n");
 	printf("Bulbizarre : 2\n");
-	printf("Quel est ton choix : \n");
+	printf("Quel est ton choix : ");
 
 	scanf("%d", &i);
 
@@ -67,8 +79,14 @@ pokemon_t *start_menu(void){
 	pokemon_t *linked_list = array_fptr[i]();
 
 
-	return linked_list;
+while(linked_list != NULL){
+		printf("%s\n",linked_list->name);
+		printf("%s\n",linked_list->type);
+		printf("%d\n",linked_list->nb_pokemon);
+		linked_list = linked_list->next;
+	}
 
+	
 }
 
 

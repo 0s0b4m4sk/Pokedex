@@ -17,4 +17,6 @@ typedef struct pokemon
 
 
 
+
+
 #endif /*__LINKED_LIST__ */
