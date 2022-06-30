@@ -9,7 +9,11 @@
 pokemon_t *salameche(void);
 pokemon_t *carapuce(void);
 pokemon_t *bulbizarre(void);
-void start_menu(void);
+pokemon_t *start_menu(void);
+void pokedex_menu(pokemon_t* linked_list);
+void print_menu(pokemon_t* linked_list);
+
+
 
 
 

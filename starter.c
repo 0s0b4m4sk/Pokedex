@@ -1,7 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include "list_chain.h"
+#include "linked_list.h"
 
+/*----------------------------------------------------------------------*/
 
 pokemon_t *salameche(void){
 
@@ -17,6 +18,7 @@ pokemon_t *salameche(void){
 
 }
 
+/*----------------------------------------------------------------------*/
 
 pokemon_t *carapuce(void){
 
@@ -32,6 +34,7 @@ pokemon_t *carapuce(void){
 
 }
 
+/*----------------------------------------------------------------------*/
 
 pokemon_t *bulbizarre(void){
 
@@ -46,19 +49,9 @@ pokemon_t *bulbizarre(void){
 	return bulbizarre_entry ;
 }
 
+/*----------------------------------------------------------------------*/
 
-/*
-void *print_list(pokemon_t *linked_list){
-
-	while(linked_list != NULL){
-		printf("%s",linked_list->name);
-		printf("%s",linked_list->type);
-		printf("%d",linked_list->nb_pokemon);
-		linked_list = linked_list->next;
-	}
-}
-*/
-void start_menu(void){
+pokemon_t * start_menu(void){
 
 	int i = 0;
 
@@ -79,14 +72,42 @@ void start_menu(void){
 	pokemon_t *linked_list = array_fptr[i]();
 
 
-while(linked_list != NULL){
-		printf("%s\n",linked_list->name);
-		printf("%s\n",linked_list->type);
-		printf("%d\n",linked_list->nb_pokemon);
-		linked_list = linked_list->next;
-	}
+	return linked_list;
+}
 
+/*----------------------------------------------------------------------*/
+
+void print_menu(pokemon_t* linked_list){
+
+	int i = 0 ; 
+
+	printf("Afficher tous le Pokedex : 0\n");
+	printf("Afficher les informations d'un pokemon : 1\n");
 	
+	scanf("%d", &i);
+
+	void (*array_fptr[2])(pokemon_t* linked_list);
+	array_fptr[0] = &print_list;
+	array_fptr[1] = &print_specific_pokemon;
+
+	array_fptr[i](linked_list);	
 }
 
 
+/*----------------------------------------------------------------------*/
+
+void pokedex_menu(pokemon_t* linked_list){
+
+	int i = 0 ;
+
+	printf("Afficher le pokedex : 0\n");
+	
+	scanf("%d", &i);
+
+	void (*array_fptr[1])(pokemon_t* linked_list);
+	array_fptr[0] = &print_menu;
+
+	array_fptr[i](linked_list);	
+}
+
+/*----------------------------------------------------------------------*/
