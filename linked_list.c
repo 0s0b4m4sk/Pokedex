@@ -28,11 +28,12 @@ void print_specific_pokemon(pokemon_t *linked_list){
 
 	char pokemon_search [15];
 
-
 	int i = 0;
 
 	printf("Par nom : 0 \n");
-	printf("Retour : 2\n");
+	printf("Attrapé : 1\n");
+	printf("Apercu : 2\n");
+	printf("Retour : 3\n");
 
 	scanf("%d",&i);
 
@@ -41,10 +42,8 @@ void print_specific_pokemon(pokemon_t *linked_list){
 		printf("Saisissez le nom du pokemon : ");
 		scanf("%s",pokemon_search);
 		printf("#----%s-----#\n",pokemon_search);
-	}
 
-
-	while(linked_list != NULL){
+		while(linked_list != NULL){
 
 		char* pokemon_pokedex = linked_list->name;
 
@@ -54,12 +53,57 @@ void print_specific_pokemon(pokemon_t *linked_list){
 
 			printf("Nom du Pokemon : %s\n",linked_list->name);
 			printf("Type du Pokemon : %s\n",linked_list->type);
+			printf("Niveau du pokemon : %d\n",linked_list->pokemon_niveau);
 			printf("Nombre de fois capturé : %d\n",linked_list->nb_pokemon);		
 		}
 			
-	linked_list = linked_list->next;
+		linked_list = linked_list->next;
 
+		}
 	}
+
+	else if(i == 1){
+
+		int statue = 1 ;
+
+		while(linked_list != NULL){
+
+			int possede = linked_list->nb_pokemon;
+
+			if(possede >= statue){
+
+				printf("Nom du Pokemon : %s\n",linked_list->name);
+				printf("Type du Pokemon : %s\n",linked_list->type);
+				printf("Niveau du pokemon : %d\n",linked_list->pokemon_niveau);
+				printf("Nombre de fois capturé : %d\n",linked_list->nb_pokemon);
+			}
+
+		linked_list = linked_list->next;
+
+		}
+	}
+
+	else if(i == 2){
+
+		int statue = 0 ;
+
+		while(linked_list != NULL){
+
+			int possede = linked_list->nb_pokemon;
+
+			if(statue == possede){
+
+				printf("Nom du Pokemon : %s\n",linked_list->name);
+				printf("Type du Pokemon : %s\n",linked_list->type);
+				printf("Niveau du pokemon : %d\n",linked_list->pokemon_niveau);
+				
+			}
+
+		linked_list = linked_list->next;
+
+		}
+	}
+	
 }
 
 /*----------------------------------------------------------------------*/
