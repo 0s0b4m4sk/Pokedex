@@ -12,9 +12,7 @@ pokemon_t *bulbizarre(void);
 pokemon_t *start_menu(void);
 void pokedex_menu(pokemon_t* linked_list);
 void print_menu(pokemon_t* linked_list);
-
-
-
+void adding_pokemon(pokemon_t* linked_list);
 
 
 #endif /*  __STARTER__ */

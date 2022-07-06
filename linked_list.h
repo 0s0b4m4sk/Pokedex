@@ -10,6 +10,7 @@ typedef struct pokemon
 {	
 	char *name;
 	char *type; 
+	int pokemon_niveau;
 	int nb_pokemon;
 	struct pokemon *next;
 }pokemon_t;
@@ -18,6 +19,9 @@ typedef struct pokemon
 
 void print_list(pokemon_t *linked_list);
 void print_specific_pokemon(pokemon_t *linked_list);
+int add_pokemon(pokemon_t* linked_list, char *name, char *type,int pokemon_niveau, int nb_pokemon);
+void print_specific_pokemon(pokemon_t *linked_list);
+
 
 
 #endif /*__LINKED_LIST__ */
