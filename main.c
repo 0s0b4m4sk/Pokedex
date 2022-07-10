@@ -8,10 +8,8 @@
 int main(void)
 {
 
-	
-	pokemon_t* list;
 
-	list = start_menu();
+	pokemon_t* list = open_file();
 	pokedex_menu(list);
 	 
 	
