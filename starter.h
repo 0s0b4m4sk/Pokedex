@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <time.h>
 
+
 /* Prototypes */
 
 pokemon_t *open_file(void);
@@ -18,6 +19,6 @@ void print_menu(pokemon_t* linked_list);
 void adding_pokemon(pokemon_t* linked_list);
 void delete_pokemon(pokemon_t *linked_list);
 void save(pokemon_t *linked_list);
-
+void quit(pokemon_t *linked_list);
 
 #endif /*  __STARTER__ */

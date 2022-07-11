@@ -4,6 +4,7 @@
 #include "linked_list.h"
 #include "starter.h"
 
+extern pokemon_t *final_linked_list;
 
 /*----------------------------------------------------------------------*/
 
@@ -23,15 +24,15 @@ void print_list(pokemon_t *linked_list){
 			printf("Nom du Pokemeon : %s\n",linked_list->name);
 			printf("Type du Pokemon : %s\n",linked_list->type);
 			printf("Niveau du pokemon : %d\n",linked_list->pokemon_niveau);
-			printf("Date de decouverte du pokemon : %s",linked_list->discover);
-			printf("Date de capture du pokemon : %s", linked_list->capture);
+			printf("Date de decouverte du pokemon : %s\n",linked_list->discover);
+			printf("Date de capture du pokemon : %s\n", linked_list->capture);
 			printf("Nombre de fois capturé : %d\n",linked_list->nb_pokemon);
 			linked_list = linked_list->next;	
 		}
+
+
 	}
 }
-
-
 
 /*----------------------------------------------------------------------*/
 
@@ -62,6 +63,9 @@ void print_specific_pokemon(pokemon_t *linked_list){
 			
 		if(strcmp(pokemon_search, pokemon_pokedex) == 0){
 
+			printf("\n");
+			printf("#---Information sur le Pokemon---#\n");
+			printf("\n");
 			printf("Nom du Pokemon : %s\n",linked_list->name);
 			printf("Type du Pokemon : %s\n",linked_list->type);
 			printf("Niveau du pokemon : %d\n",linked_list->pokemon_niveau);
@@ -85,6 +89,9 @@ void print_specific_pokemon(pokemon_t *linked_list){
 
 			if(possede >= statue){
 
+				printf("\n");
+				printf("#---Information sur le Pokemon---#\n");
+				printf("\n");
 				printf("Nom du Pokemon : %s\n",linked_list->name);
 				printf("Type du Pokemon : %s\n",linked_list->type);
 				printf("Niveau du pokemon : %d\n",linked_list->pokemon_niveau);
@@ -117,8 +124,7 @@ void print_specific_pokemon(pokemon_t *linked_list){
 		linked_list = linked_list->next;
 
 		}
-	}
-	
+	}	
 }
 
 /*----------------------------------------------------------------------*/
@@ -155,6 +161,7 @@ int add_pokemon(pokemon_t *linked_list, char *name, char *type, int pokemon_nive
 
 	else{
 		tmp_current = linked_list ;
+
 		if(strcmp(name,tmp_current->name) < 0 ){
 
 			printf("%s",name);
@@ -165,8 +172,10 @@ int add_pokemon(pokemon_t *linked_list, char *name, char *type, int pokemon_nive
 			linked_list = new_pokemon;
 			return(0);
 		}
+
 		else{
 			tmp_prev = tmp_current; 
+
 			while(tmp_current && strcmp(name,tmp_current->name) > 0){
 
 				printf("%d",strcmp(name,tmp_current->name));
@@ -174,11 +183,13 @@ int add_pokemon(pokemon_t *linked_list, char *name, char *type, int pokemon_nive
 				tmp_prev = tmp_current;
 				tmp_current = tmp_current->next;
 			}
+
 			if(!tmp_current){
 
 				tmp_prev->next = new_pokemon;
 				return(0);
 			}
+
 			else{
 
 				new_pokemon->next = tmp_current;
@@ -188,15 +199,14 @@ int add_pokemon(pokemon_t *linked_list, char *name, char *type, int pokemon_nive
 		}
 	}
 
+
 	print_list(linked_list);
 	return(1);	
 }	
 
-
 /*----------------------------------------------------------------------*/
 
-int get_lenght(pokemon_t * linked_list)
-{
+int get_lenght(pokemon_t * linked_list){
 
 	int count;
 
@@ -211,8 +221,8 @@ int get_lenght(pokemon_t * linked_list)
 
 /*----------------------------------------------------------------------*/
 
-int get_index(pokemon_t *linked_list, int lenght, char * pokemon_search)
-{
+int get_index(pokemon_t *linked_list, int lenght, char * pokemon_search){
+
 	int index = 0; 
 
 	for(int i = 0; i < lenght && linked_list != NULL; i++){
@@ -235,39 +245,48 @@ int get_index(pokemon_t *linked_list, int lenght, char * pokemon_search)
 
 /*----------------------------------------------------------------------*/
 
-void delete_pokemon_node(pokemon_t *linked_list, int index )
-{
+void delete_pokemon_node(pokemon_t *linked_list, int index){
 
-	pokemon_t *head = NULL;
-	pokemon_t *tmp = linked_list;
 
-	if(index == 0){
+	pokemon_t *prev, *tmp;
+    int i;
 
-		head=head->next;
-		tmp->next= NULL;
-		free(tmp);
-	}
+    if(linked_list == NULL || index < 0){ 
+    	return ;
+    }
 
-	else{
-		for(int i = 0; index-1; i++){
+    if(index == 0){
 
-			tmp=tmp->next;
-		}
+    	printf("index : %d", index);
+        tmp = linked_list->next;
+        free(linked_list);
+        linked_list = NULL;
+	} 
 
-		pokemon_t *del = tmp->next;
-		tmp->next = tmp->next->next;
-		del->next = NULL;
-		free(del);
-	}
+    else {
 
-	pokedex_menu(linked_list);
+        prev = linked_list;
+        tmp = linked_list->next;
 
+        for(i=1;i<index;++i){
+            
+            prev = tmp;
+            tmp = tmp->next;
+            
+            if(tmp == NULL){
+            	return ;
+            }
+        }
+
+        prev->next = tmp->next;
+        free(tmp);
+        tmp = NULL;
+    }
 }
 
 /*----------------------------------------------------------------------*/
 
-void update_element(pokemon_t *linked_list, int index , int old_value, int new_value)
-{
+void update_element(pokemon_t *linked_list, int index , int old_value, int new_value, char* capture){
 	
 
 	pokemon_t *head = linked_list ;
@@ -283,9 +302,12 @@ void update_element(pokemon_t *linked_list, int index , int old_value, int new_v
 	current = head;
 
 	for(int i = 0; index; i++){	
-		if(current->nb_pokemon == old_value)
-		{
+
+		if(current->nb_pokemon == old_value){
+
 			current->nb_pokemon = new_value;
+			current->capture = capture;
+			
 			return;
 		}
 
@@ -294,14 +316,11 @@ void update_element(pokemon_t *linked_list, int index , int old_value, int new_v
 	} 
 
 	pokedex_menu(linked_list);
-
-
 }
 
 /*----------------------------------------------------------------------*/
 
-int exist_pokemon(pokemon_t *linked_list, char *name)
-{
+int exist_pokemon(pokemon_t *linked_list, char *name){
 
 	while(linked_list != NULL){
 
@@ -319,6 +338,10 @@ int exist_pokemon(pokemon_t *linked_list, char *name)
 
 	return(0);
 }
+
+/*----------------------------------------------------------------------*/
+
+
 
 
 

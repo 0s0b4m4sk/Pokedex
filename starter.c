@@ -10,6 +10,10 @@
 #include "starter.h"
 
 
+pokemon_t *final_linked_list = NULL;
+
+/*----------------------------------------------------------------------*/
+
 pokemon_t *open_file(void){
 
 	FILE *CSV = fopen("./pokedex.csv", "r");
@@ -19,18 +23,16 @@ pokemon_t *open_file(void){
 	char *ligne = NULL;
 	size_t cpt = 0;
 
-	//Supprimme le header du CSV
 	getline(&ligne, &cpt, CSV);
 	free(ligne);
 	ligne = NULL;
 	cpt = 0;
 
-	while(getline(&ligne, &cpt, CSV)!= -1)
-	{
-		//parse le CSV en liste chainée
+	while(getline(&ligne, &cpt, CSV)!= -1){
+		
 		char *tmp;
 		pokemon_t *new_node = malloc(sizeof(pokemon_t));
-		//enlève des sauts de lignes en trop
+	
 		ligne[strlen(ligne) - 1] = 0;
 
 		new_node->prev = tmp_pokemon;
@@ -56,15 +58,18 @@ pokemon_t *open_file(void){
 		
 		new_node->next = NULL;
 		
-		if(tmp_pokemon!=NULL)
-		{
+		if(tmp_pokemon!=NULL){
+
 			tmp_pokemon->next = new_node;
+
 		}
+
 		tmp_pokemon = new_node;
 
-		if(pokedex == NULL)
-		{
+		if(pokedex == NULL)	{
+
 			pokedex = tmp_pokemon;
+
 		}
 
 		free(ligne);
@@ -76,37 +81,34 @@ pokemon_t *open_file(void){
 	return pokedex;
 }
 
+/*----------------------------------------------------------------------*/
 
-void save(pokemon_t *linked_list)
-{
+void save(pokemon_t *linked_list){
+
 	pokemon_t *tmp = linked_list;
 
 	FILE* file = fopen("pokedex.csv", "w");
 	
-	if(file == NULL)
-	{
+	if(file == NULL){
+
 		fprintf(stderr, "Erreur dans l'ouverture du fichier de sauvegarde\n");
 	}
 
-	//rajout du header du CSV
 	fprintf(file,"name;type;pokemon_niveau;nb_pokemon;discover;capture\n");
 
-	while(tmp != NULL)
-	{
+	while(tmp != NULL){
+
 		fprintf(file, "%s;%s;%d;%d;%s;%s\n", tmp->name, tmp->type,tmp->pokemon_niveau, tmp->nb_pokemon, tmp->discover, tmp->capture);
 		tmp = tmp->next;
+	
 	}
 
 	fclose(file);
 }
 
-
-
-
 /*----------------------------------------------------------------------*/
 
-char* get_date(void)
-{
+char* get_date(void){
 
 	time_t mytime = time(NULL);
     char * time_str = ctime(&mytime);
@@ -115,7 +117,6 @@ char* get_date(void)
     return time_str;
 
 }
-
 
 /*----------------------------------------------------------------------*/
 
@@ -236,9 +237,7 @@ void print_menu(pokemon_t* linked_list){
 	
 }
 
-
 /*----------------------------------------------------------------------*/
-
 
 void adding_pokemon(pokemon_t* linked_list){
  
@@ -272,7 +271,6 @@ void adding_pokemon(pokemon_t* linked_list){
 
 	int exist = exist_pokemon(linked_list,pokemon_name);
 
-
 	if(i == 0){
 
 		if(exist == 1 ){
@@ -288,20 +286,22 @@ void adding_pokemon(pokemon_t* linked_list){
 				if(strcmp(pokemon_name, pokemon_pokedex) == 0){
 
 					nb_pokemon = linked_list->nb_pokemon + 1;
-					update_element(linked_list, index_pokemon , linked_list->nb_pokemon, nb_pokemon);	
+					update_element(linked_list,index_pokemon ,linked_list->nb_pokemon,nb_pokemon,current_time);
+						
 				}
 				
 			linked_list = linked_list->next;
 
 			}
-		}	
-	
+		}
+
 		else{	
 
 			nb_pokemon = 1;
 			add_pokemon(linked_list,pokemon_name,pokemon_type,pokemon_niveau,nb_pokemon,current_time,current_time);
 		}	
 	}
+
 	else if( i == 1){
 
 		nb_pokemon = 0 ;
@@ -313,21 +313,14 @@ void adding_pokemon(pokemon_t* linked_list){
 		printf("Mauvaise saisie \n");
 		adding_pokemon(linked_list);
 	}
-
-	
-
-
 }
 		
-
-
 /*----------------------------------------------------------------------*/
 
 void pokedex_menu(pokemon_t* linked_list){
 
 
-	while(1)
-	{
+	while(1){
 		int i = 0 ;
 
 		printf("\n");
@@ -337,35 +330,39 @@ void pokedex_menu(pokemon_t* linked_list){
 		printf("Afficher le pokedex : 1\n");
 		printf("Supprimer un pokemon : 2\n");
 		printf("sauvegarder les pokemons : 3\n");
+		printf("Quitter le programme : 4\n");
 
 
 		scanf("%d", &i);
 
-		if((i == 0) || (i==1) || (i==2) || (i==3)){
+		if((i == 0) || (i==1) || (i==2) || (i==3) || (i ==4 )){
 
 			void (*array_fptr[4])(pokemon_t* linked_list);
 			array_fptr[0] = &adding_pokemon; 
 			array_fptr[1] = &print_menu;
 			array_fptr[2] = &delete_pokemon;
 			array_fptr[3] = &save;
+			array_fptr[4] = &quit;
 
 			array_fptr[i](linked_list);
 		}
+
 		else {
 
 			break;
 		}	
+
+		final_linked_list = linked_list;
+			
 	}	
-
 }
-
 
 /*----------------------------------------------------------------------*/
 
+void delete_pokemon(pokemon_t *linked_list){
 
-void delete_pokemon(pokemon_t *linked_list)
-{
 	char pokemon_search [15];
+	char capture [7] = "none";
 	int nb_suppression; 
 	pokemon_t *list = linked_list;
 
@@ -391,14 +388,16 @@ void delete_pokemon(pokemon_t *linked_list)
 			if(statue == 0 ){
 
 				printf("Le pokemon %s est oublié ! ", pokemon_search);
-				delete_pokemon_node(list,index_pokemon);	
+				delete_pokemon_node(list,index_pokemon);
+				
+
 				
 			}	
 
 			else if (statue == 1 ){
 
 				printf("Le pokemon %s que vous posséder en 1 exemplaire sera oublié !",pokemon_search);
-				delete_pokemon_node(list,index_pokemon);
+				delete_pokemon_node(list,index_pokemon);	
 				
 			}
 
@@ -411,10 +410,13 @@ void delete_pokemon(pokemon_t *linked_list)
 				if(nb_suppression >= statue){
 
 					printf("Le pokemon %s sera oublié",pokemon_search);
+					delete_pokemon_node(list,index_pokemon);
 				}
 				else{
 
+					int nb_pokemon = linked_list->nb_pokemon - nb_suppression; 	
 					printf("update du nombre de pokemon ");
+					update_element(linked_list,index_pokemon ,linked_list->nb_pokemon,nb_pokemon,capture);
 				}
 			}	
 		}
@@ -422,4 +424,28 @@ void delete_pokemon(pokemon_t *linked_list)
 		linked_list = linked_list->next;
 	}
 }
+
+/*----------------------------------------------------------------------*/
+
+void quit(pokemon_t *linked_list){
+
+	int i = 0; 
+
+	printf("Quitter sans sauvegarder : 0\n");
+	printf("Quitter et sauvegarder : 1 \n");
+
+	scanf("%d",&i);
+
+	if(i == 0){
+
+		exit(0);
+	}
+
+	else if( i == 1){
+
+		save(linked_list);
+		exit(0);
+	}
+}
+
 
